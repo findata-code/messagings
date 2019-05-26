@@ -11,4 +11,5 @@ type Configuration struct {
 		Secret string `json:"secret"`
 		Token string `json:"token"`
 	} `json:"line_bot"`
+	AuthToken string `json:"auth_token"`
 }
