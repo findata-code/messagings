@@ -1,4 +1,4 @@
-package messaging_income
+package app
 
 type Configuration struct {
 	DB struct {

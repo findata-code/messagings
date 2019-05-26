@@ -1,4 +1,4 @@
-package messaging_gateway
+package app
 
 type Message struct {
 	Message    string

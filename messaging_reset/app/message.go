@@ -1,4 +1,4 @@
-package messaging_reset
+package app
 
 type Message struct {
 	Message    string

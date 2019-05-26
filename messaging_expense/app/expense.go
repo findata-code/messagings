@@ -1,13 +1,14 @@
-package messaging_reset
+package app
 
 import (
 	"github.com/jinzhu/gorm"
 	"time"
 )
 
-type Reset struct {
+type Expense struct {
 	gorm.Model
 	UserId      string
+	Value       float64
 	FullMessage string
 	Timestamp   time.Time
 	UnixNano    string

@@ -1,4 +1,4 @@
-package messaging_income
+package app
 
 type Message struct {
 	Message    string

@@ -1,14 +1,13 @@
-package messaging_income
+package app
 
 import (
 	"github.com/jinzhu/gorm"
 	"time"
 )
 
-type Income struct {
+type Reset struct {
 	gorm.Model
 	UserId      string
-	Value       float64
 	FullMessage string
 	Timestamp   time.Time
 	UnixNano    string

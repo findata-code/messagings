@@ -1,11 +1,11 @@
-package messaging_expense
+package app
 
 import (
 	"github.com/jinzhu/gorm"
 	"time"
 )
 
-type Expense struct {
+type Income struct {
 	gorm.Model
 	UserId      string
 	Value       float64

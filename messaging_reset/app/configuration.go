@@ -1,4 +1,4 @@
-package messaging_reset
+package app
 
 type Configuration struct {
 	DB struct {

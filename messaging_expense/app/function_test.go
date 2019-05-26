@@ -1,4 +1,4 @@
-package messaging_expense
+package app
 
 import (
 	"testing"

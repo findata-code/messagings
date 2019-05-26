@@ -1,4 +1,4 @@
-package messaging_income
+package app
 
 import (
 	"testing"

@@ -1,14 +1,14 @@
-package messaging_income
+package app
 
 import (
 	"context"
-	"github.com/findata-code/fastvault-client-go"
-	"github.com/jinzhu/gorm"
 	_ "database/sql"
-	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
 	"encoding/json"
 	"errors"
 	"fmt"
+	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
+	"github.com/findata-code/fastvault-client-go"
+	"github.com/jinzhu/gorm"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
 	"os"
@@ -33,7 +33,6 @@ type PubSubMessage struct {
 	Data []byte `json:"data"`
 }
 
-
 func init() {
 	err := getConfiguration()
 
@@ -43,7 +42,7 @@ func init() {
 		log.Fatal(err)
 	}
 
-	db.AutoMigrate(&Income{})
+	db.AutoMigrate(&Expense{})
 
 	bot = newLineBot()
 }
@@ -51,13 +50,13 @@ func init() {
 /*
 	Entry point
 */
-func IncomeMessage(ctx context.Context, psm PubSubMessage) error {
+func ExpenseMessage(ctx context.Context, psm PubSubMessage) error {
 	m, err := getMessage(psm)
 	if err != nil {
 		return err
 	}
 
-	if !isIncomePattern(m.Message) {
+	if !isExpensePattern(m.Message) {
 		return nil
 	}
 
@@ -66,7 +65,7 @@ func IncomeMessage(ctx context.Context, psm PubSubMessage) error {
 		return err
 	}
 
-	i := Income{
+	i := Expense{
 		UserId:      m.UserId,
 		Value:       value,
 		FullMessage: m.Message,
@@ -100,7 +99,6 @@ func getConfiguration() error {
 	return err
 }
 
-
 func newLineBot() *linebot.Client {
 	client, err := linebot.New(config.LineBot.Secret, config.LineBot.Token)
 	if err != nil {
@@ -112,7 +110,7 @@ func newLineBot() *linebot.Client {
 
 func extractValue(s string) (float64, error) {
 	var v float64
-	re := regexp.MustCompile("([+][ ]?[0-9]*[kKmM]?)")
+	re := regexp.MustCompile("([-][ ]?[0-9]*[kKmM]?)")
 	gs := re.FindAllStringSubmatch(s, -1)
 	if len(gs) != 1 {
 		return v, errors.New(fmt.Sprintf("found %d groups in message %s", len(gs), s))
@@ -128,8 +126,8 @@ func extractValue(s string) (float64, error) {
 	return strconv.ParseFloat(m, 64)
 }
 
-func isIncomePattern(s string) bool {
-	re := regexp.MustCompile("([+][ ]?[0-9]*[kKmM]?)")
+func isExpensePattern(s string) bool {
+	re := regexp.MustCompile("([-][ ]?[0-9]*[kKmM]?)")
 	return re.Match([]byte(s))
 }
 

@@ -1,4 +1,4 @@
-package messaging_gateway
+package app
 
 import (
 	"cloud.google.com/go/pubsub"
