@@ -12,8 +12,9 @@ import (
 )
 
 const (
-	FASTVAULT_LOCATION  = "http://128.199.147.139:9800"
-	ENV_FASTVAULT_TOKEN = "FV_TOKEN"
+	FastvaultLocation = "http://128.199.147.139:9800"
+	EnvFastvaultToken = "FV_TOKEN"
+
 )
 
 var (
@@ -41,11 +42,11 @@ func init() {
 }
 
 func getConfiguration() error {
-	token := os.Getenv(ENV_FASTVAULT_TOKEN)
+	token := os.Getenv(EnvFastvaultToken)
 	if token == "" {
 		log.Fatal("Could not read fastvault token from env variable")
 	}
-	fv := fastvault_client_go.New(FASTVAULT_LOCATION)
+	fv := fastvault_client_go.New(FastvaultLocation)
 	err := fv.GetJson(token, &config)
 	if err != nil {
 		log.Fatal(err)

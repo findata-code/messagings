@@ -1,11 +1,9 @@
-package messaging_summary
+package app
 
 import (
 	_ "database/sql"
-	"fmt"
 	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
 	"github.com/findata-code/fastvault-client-go"
-	"github.com/jinzhu/gorm"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
 	"os"
@@ -18,14 +16,15 @@ const (
 
 var (
 	config Configuration
-	db     *gorm.DB
 	bot    *linebot.Client
 )
 
+type PubSubMessage struct {
+	Data []byte `json:"data"`
+}
+
 func init() {
 	err := getConfiguration()
-	url := fmt.Sprintf("%s:%s@cloudsql(%s)/%s?charset=utf8&parseTime=True&loc=Local", config.DB.User, config.DB.Password, config.DB.Location, config.DB.Database)
-	db, err = gorm.Open("mysql", url)
 	if err != nil {
 		log.Fatal(err)
 	}
