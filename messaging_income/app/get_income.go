@@ -32,13 +32,3 @@ func GetIncome (w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "%s", string(b))
 }
-
-func ResponseError (w http.ResponseWriter, err error) {
-	w.WriteHeader(http.StatusBadRequest)
-	fmt.Fprint(w, err.Error())
-}
-
-func ResponseUnauthorized(w http.ResponseWriter, err error) {
-	w.WriteHeader(http.StatusUnauthorized)
-	fmt.Fprint(w, err.Error())
-}
