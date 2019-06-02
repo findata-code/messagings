@@ -13,7 +13,7 @@ func DeleteExpense(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method != http.MethodDelete {
-		ResponseError(w, errors.New(fmt.Sprintf("function doesn't support %s method", r.Method)))
+		ResponseMethodUnsupport(w, errors.New(fmt.Sprintf("function doesn't support %s method", r.Method)))
 		return
 	}
 
@@ -21,7 +21,7 @@ func DeleteExpense(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query()["id"]
 
 	if userId == nil {
-		ResponseError(w, errors.New("field are missing"))
+		ResponseError(w, errors.New("fields are missing"))
 		return
 	}
 
