@@ -7,5 +7,5 @@ import (
 
 var ExpenseMessage = message_handler.ExpenseMessage
 var GetExpense = http_handler.GetExpense
-var GetLastNExpense = http_handler.GetLastNExpense
+var GetLastNExpenses = http_handler.GetLastNExpenses
 var DeleteExpense = http_handler.DeleteExpense

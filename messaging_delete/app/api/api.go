@@ -2,10 +2,6 @@ package app
 
 import "net/http"
 
-const (
-	AuthToken = "X-Authorization-Token"
-)
-
 func AddAuth(r *http.Request) *http.Request {
 	r.Header.Set(AuthToken, config.AuthToken)
 	return r

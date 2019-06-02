@@ -19,7 +19,7 @@ func DeleteExpense(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := requireField(r.URL.Query(), "user_id", "since"); err != nil {
+	if err := requireField(r.URL.Query(), "user_id", "id"); err != nil {
 		ResponseError(w, errors.New("fields are missing"))
 		return
 	}
