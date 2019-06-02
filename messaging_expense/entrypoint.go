@@ -4,4 +4,4 @@ import "messaging_expense/app"
 
 var ExpenseMessage = app.ExpenseMessage
 var GetExpense = app.GetExpense
-var DeleteExpense = app.DeleteExpese
+var DeleteExpense = app.DeleteExpense

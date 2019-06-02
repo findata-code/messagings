@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func DeleteExpese(w http.ResponseWriter, r *http.Request) {
+func DeleteExpense(w http.ResponseWriter, r *http.Request) {
 	if err := CheckAuth(r); err != nil {
 		ResponseUnauthorized(w, err)
 		return
@@ -18,14 +18,19 @@ func DeleteExpese(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userId := r.URL.Query()["user_id"]
+	id := r.URL.Query()["id"]
 
-	var ex Expense
-	if err := db.Where("user_id = ?", userId).Last(&ex).Error; err != nil {
-		ResponseError(w, err)
+	if userId == nil {
+		ResponseError(w, errors.New("field are missing"))
 		return
 	}
 
-	if err := db.Delete(&ex).Error; err != nil {
+	if id == nil {
+		ResponseError(w, errors.New("fields are missing"))
+		return
+	}
+
+	if err := db.Where("user_id = ? AND id = ?", userId, id).Delete(&Expense{}).Error; err != nil {
 		ResponseError(w, err)
 		return
 	}
