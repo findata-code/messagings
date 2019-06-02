@@ -1,8 +1,10 @@
-package app
+package http_handler
 
 import (
 	"errors"
 	"fmt"
+	"messaging_income/app"
+	"messaging_income/app/model"
 	"net/http"
 )
 
@@ -30,7 +32,7 @@ func DeleteIncome(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := db.Where("user_id = ? AND id = ?", userId, id).Delete(&Income{}).Error; err != nil {
+	if err := app.Db.Where("user_id = ? AND id = ?", userId, id).Delete(&model.Income{}).Error; err != nil {
 		ResponseError(w, err)
 		return
 	}

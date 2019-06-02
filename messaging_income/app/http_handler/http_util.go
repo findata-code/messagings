@@ -1,4 +1,4 @@
-package app
+package http_handler
 
 import (
 	"fmt"

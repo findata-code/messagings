@@ -1,8 +1,10 @@
-package app
+package http_handler
 
 import (
 	"encoding/json"
 	"fmt"
+	"messaging_income/app"
+	"messaging_income/app/model"
 	"net/http"
 )
 
@@ -16,9 +18,9 @@ func GetIncome (w http.ResponseWriter, r *http.Request) {
 	userId := r.URL.Query()["user_id"]
 	since := r.URL.Query()["since"]
 
-	incomes := make([]Income, 0)
+	incomes := make([]model.Income, 0)
 
-	err := db.Where("user_id = ? AND unix_nano >= ?", userId, since).Find(&incomes).Error
+	err := app.Db.Where("user_id = ? AND unix_nano >= ?", userId, since).Find(&incomes).Error
 	if err != nil {
 		ResponseError(w, err)
 		return

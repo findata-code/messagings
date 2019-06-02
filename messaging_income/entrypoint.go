@@ -1,7 +1,10 @@
 package messaging_income
 
-import "messaging_income/app"
+import (
+	"messaging_income/app/http_handler"
+	"messaging_income/app/message_handler"
+)
 
-var IncomeMessage = app.IncomeMessage
-var GetIncome = app.GetIncome
-var DeleteIncome = app.DeleteIncome
+var IncomeMessage = message_handler.IncomeMessage
+var GetIncome = http_handler.GetIncome
+var DeleteIncome = http_handler.DeleteIncome
