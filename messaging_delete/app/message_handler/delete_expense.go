@@ -1,4 +1,4 @@
-package http_handler
+package message_handler
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"log"
 	"messaging_delete/app"
 	"messaging_delete/app/api"
 	"messaging_delete/app/model"
@@ -44,6 +45,8 @@ func DeleteExpenseMessage(ctx context.Context, psm model.PubSubMessage) error {
 		}
 		id = int64(expenses[0].ID)
 	}
+
+	log.Println("deleting expense id", id)
 
 	err = api.DeleteExpense(m.UserId, int(id))
 	if err != nil {

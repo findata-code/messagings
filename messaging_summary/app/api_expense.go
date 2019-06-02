@@ -24,7 +24,7 @@ func GetExpenses(uid, since string) ([]Expense, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(url)
+
 	incomes := make([]Expense, 0)
 	err = json.Unmarshal(b, &incomes)
 	if err != nil {

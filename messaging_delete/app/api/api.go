@@ -1,9 +1,14 @@
-package app
+package api
 
-import "net/http"
+import (
+	"messaging_delete/app"
+	"net/http"
+)
+
+const AuthToken = "X-Authorization-Token"
 
 func AddAuth(r *http.Request) *http.Request {
-	r.Header.Set(AuthToken, config.AuthToken)
+	r.Header.Set(AuthToken, app.Config.AuthToken)
 	return r
 }
 
