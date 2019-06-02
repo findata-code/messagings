@@ -1,4 +1,4 @@
-package app
+package message_handler
 
 import (
 	"context"
@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"messaging_expense/app"
+	"messaging_expense/app/model"
 	"regexp"
 	"strconv"
 	"strings"
@@ -15,7 +17,7 @@ import (
 /*
 	Entry point
 */
-func ExpenseMessage(ctx context.Context, psm PubSubMessage) error {
+func ExpenseMessage(ctx context.Context, psm model.PubSubMessage) error {
 	m, err := getMessage(psm)
 	if err != nil {
 		return err
@@ -30,7 +32,7 @@ func ExpenseMessage(ctx context.Context, psm PubSubMessage) error {
 		return err
 	}
 
-	i := Expense{
+	i := model.Expense{
 		UserId:      m.UserId,
 		Value:       value,
 		FullMessage: m.Message,
@@ -38,12 +40,12 @@ func ExpenseMessage(ctx context.Context, psm PubSubMessage) error {
 		Timestamp:   time.Now(),
 	}
 
-	err = db.Create(&i).Error
+	err = app.Db.Create(&i).Error
 	if err != nil {
 		return err
 	}
 
-	_, err = bot.ReplyMessage(m.ReplyToken, linebot.NewTextMessage("รับทราบจ้า บันทึกกก")).Do()
+	_, err = app.Bot.ReplyMessage(m.ReplyToken, linebot.NewTextMessage("รับทราบจ้า บันทึกกก")).Do()
 	if err != nil {
 		return err
 	}
@@ -74,11 +76,11 @@ func isExpensePattern(s string) bool {
 	return re.Match([]byte(s))
 }
 
-func getMessage(psm PubSubMessage) (Message, error) {
-	var message Message
+func getMessage(psm model.PubSubMessage) (model.Message, error) {
+	var message model.Message
 	err := json.Unmarshal(psm.Data, &message)
 	if err != nil {
-		return Message{}, err
+		return model.Message{}, err
 	}
 
 	return message, nil

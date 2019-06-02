@@ -6,7 +6,7 @@ type Configuration struct {
 		Password string `json:"password"`
 		Location string `json:"location"`
 		Database string `json:"database"`
-	} `json:"db"`
+	} `json:"Db"`
 	LineBot struct {
 		Secret string `json:"secret"`
 		Token  string `json:"token"`
