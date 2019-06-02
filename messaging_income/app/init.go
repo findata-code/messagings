@@ -1,7 +1,9 @@
 package app
 
 import (
+	_ "database/sql"
 	"fmt"
+	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
 	"github.com/findata-code/fastvault-client-go"
 	"github.com/jinzhu/gorm"
 	"github.com/line/line-bot-sdk-go/linebot"

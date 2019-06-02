@@ -15,13 +15,9 @@ const (
 )
 
 var (
-	config Configuration
-	bot    *linebot.Client
+	Config Configuration
+	Bot    *linebot.Client
 )
-
-type PubSubMessage struct {
-	Data []byte `json:"data"`
-}
 
 func init() {
 	err := getConfiguration()
@@ -29,7 +25,7 @@ func init() {
 		log.Fatal(err)
 	}
 
-	bot = newLineBot()
+	Bot = newLineBot()
 }
 
 func getConfiguration() error {
@@ -38,7 +34,7 @@ func getConfiguration() error {
 		log.Fatal("Could not read fastvault token from env variable")
 	}
 	fv := fastvault_client_go.New(FASTVAULT_LOCATION)
-	err := fv.GetJson(token, &config)
+	err := fv.GetJson(token, &Config)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,7 +42,7 @@ func getConfiguration() error {
 }
 
 func newLineBot() *linebot.Client {
-	client, err := linebot.New(config.LineBot.Secret, config.LineBot.Token)
+	client, err := linebot.New(Config.LineBot.Secret, Config.LineBot.Token)
 	if err != nil {
 		log.Panic(err)
 	}

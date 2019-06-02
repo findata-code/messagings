@@ -1,14 +1,17 @@
-package app
+package message_handler
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"messaging_summary/app"
+	"messaging_summary/app/api"
+	"messaging_summary/app/model"
 	"strings"
 )
 
-func GetSummaryMessage(ctx context.Context, psm PubSubMessage) error {
+func GetSummaryMessage(ctx context.Context, psm model.PubSubMessage) error {
 	m, err := getMessage(psm)
 	if err != nil {
 		ctx.Err()
@@ -20,19 +23,19 @@ func GetSummaryMessage(ctx context.Context, psm PubSubMessage) error {
 		return nil
 	}
 
-	latestReset, err := GetLatestReset(m.UserId)
+	latestReset, err := api.GetLatestReset(m.UserId)
 	if err != nil {
 		ctx.Err()
 		return err
 	}
 
-	incomes, err := GetIncomes(m.UserId, latestReset.UnixNano)
+	incomes, err := api.GetIncomes(m.UserId, latestReset.UnixNano)
 	if err != nil {
 		ctx.Err()
 		return err
 	}
 
-	expenses, err := GetExpenses(m.UserId, latestReset.UnixNano)
+	expenses, err := api.GetExpenses(m.UserId, latestReset.UnixNano)
 	if err != nil {
 		ctx.Err()
 		return err
@@ -47,7 +50,7 @@ func GetSummaryMessage(ctx context.Context, psm PubSubMessage) error {
 		sum += ex.Value
 	}
 
-	_, err = bot.ReplyMessage(m.ReplyToken, linebot.NewTextMessage(CreateMessage(incomes, expenses, sum))).Do()
+	_, err = app.Bot.ReplyMessage(m.ReplyToken, linebot.NewTextMessage(CreateMessage(incomes, expenses, sum))).Do()
 	if err != nil {
 		return err
 	}
@@ -55,7 +58,7 @@ func GetSummaryMessage(ctx context.Context, psm PubSubMessage) error {
 	return nil
 }
 
-func CreateMessage(ins []Income, exs []Expense, sum float64) string {
+func CreateMessage(ins []model.Income, exs []model.Expense, sum float64) string {
 	totalIncome := 0.0
 	totalExpense := 0.0
 
@@ -86,11 +89,11 @@ func isSummaryMessage(s string) bool {
 	return false
 }
 
-func getMessage(psm PubSubMessage) (Message, error) {
-	var message Message
+func getMessage(psm model.PubSubMessage) (model.Message, error) {
+	var message model.Message
 	err := json.Unmarshal(psm.Data, &message)
 	if err != nil {
-		return Message{}, err
+		return model.Message{}, err
 	}
 
 	return message, nil

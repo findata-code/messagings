@@ -1,8 +1,10 @@
-package app
+package http_handler
 
 import (
 	"encoding/json"
 	"fmt"
+	"messaging_reset/app"
+	"messaging_reset/app/model"
 	"net/http"
 )
 
@@ -14,9 +16,9 @@ func GetLatestReset (w http.ResponseWriter, r *http.Request) {
 
 	userId := r.URL.Query()["user_id"]
 
-	var re Reset
+	var re model.Reset
 
-	err := db.Where("user_id = ?", userId).Order("unix_nano desc").Limit(1).Find(&re).Error
+	err := app.Db.Where("user_id = ?", userId).Order("unix_nano desc").Limit(1).Find(&re).Error
 	if err != nil {
 		ResponseError(w, err)
 		return

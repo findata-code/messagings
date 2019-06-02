@@ -1,13 +1,14 @@
 package app
 
 import (
+	_ "database/sql"
 	"fmt"
+	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
 	"github.com/findata-code/fastvault-client-go"
 	"github.com/jinzhu/gorm"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
-	_ "database/sql"
-	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
+	"messaging_reset/app/model"
 	"os"
 )
 
@@ -18,27 +19,23 @@ const (
 )
 
 var (
-	config Configuration
-	db     *gorm.DB
-	bot    *linebot.Client
+	Config Configuration
+	Db     *gorm.DB
+	Bot    *linebot.Client
 )
-
-type PubSubMessage struct {
-	Data []byte `json:"data"`
-}
 
 func init() {
 	err := getConfiguration()
 
-	url := fmt.Sprintf("%s:%s@cloudsql(%s)/%s?charset=utf8&parseTime=True&loc=Local", config.DB.User, config.DB.Password, config.DB.Location, config.DB.Database)
-	db, err = gorm.Open("mysql", url)
+	url := fmt.Sprintf("%s:%s@cloudsql(%s)/%s?charset=utf8&parseTime=True&loc=Local", Config.DB.User, Config.DB.Password, Config.DB.Location, Config.DB.Database)
+	Db, err = gorm.Open("mysql", url)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	db.AutoMigrate(&Reset{})
+	Db.AutoMigrate(&model.Reset{})
 
-	bot = newLineBot()
+	Bot = newLineBot()
 }
 
 func getConfiguration() error {
@@ -47,7 +44,7 @@ func getConfiguration() error {
 		log.Fatal("Could not read fastvault token from env variable")
 	}
 	fv := fastvault_client_go.New(FastvaultLocation)
-	err := fv.GetJson(token, &config)
+	err := fv.GetJson(token, &Config)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -55,7 +52,7 @@ func getConfiguration() error {
 }
 
 func newLineBot() *linebot.Client {
-	client, err := linebot.New(config.LineBot.Secret, config.LineBot.Token)
+	client, err := linebot.New(Config.LineBot.Secret, Config.LineBot.Token)
 	if err != nil {
 		log.Panic(err)
 	}

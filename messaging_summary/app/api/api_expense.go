@@ -1,14 +1,16 @@
-package app
+package api
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"messaging_summary/app"
+	"messaging_summary/app/model"
 	"net/http"
 )
 
-func GetIncomes(uid, since string) ([]Income, error) {
-	url := fmt.Sprintf("%s?user_id=%s&since=%s", config.API.GetIncomes, uid, since)
+func GetExpenses(uid, since string) ([]model.Expense, error) {
+	url := fmt.Sprintf("%s?user_id=%s&since=%s", app.Config.API.GetExpenses, uid, since)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -25,7 +27,7 @@ func GetIncomes(uid, since string) ([]Income, error) {
 		return nil, err
 	}
 
-	incomes := make([]Income, 0)
+	incomes := make([]model.Expense, 0)
 	err = json.Unmarshal(b, &incomes)
 	if err != nil {
 		return nil, err
@@ -33,3 +35,4 @@ func GetIncomes(uid, since string) ([]Income, error) {
 
 	return incomes, nil
 }
+
