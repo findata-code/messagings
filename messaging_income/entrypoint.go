@@ -7,4 +7,5 @@ import (
 
 var IncomeMessage = message_handler.IncomeMessage
 var GetIncome = http_handler.GetIncome
+var GetLastNIncomes = http_handler.GetLastNIncomes
 var DeleteIncome = http_handler.DeleteIncome

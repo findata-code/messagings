@@ -10,12 +10,8 @@ import (
 	"messaging_delete/app"
 	"messaging_delete/app/api"
 	"messaging_delete/app/model"
-	"strconv"
+	"messaging_delete/app/utils"
 	"strings"
-)
-
-const (
-	LatestExpense = -1
 )
 
 func DeleteExpenseMessage(ctx context.Context, psm model.PubSubMessage) error {
@@ -28,12 +24,12 @@ func DeleteExpenseMessage(ctx context.Context, psm model.PubSubMessage) error {
 		return nil
 	}
 
-	id, err := getEntityIdentifier(m.Message)
+	id, err := utils.GetEntityIdentifier(m.Message)
 	if err != nil {
 		return err
 	}
 
-	if id == LatestExpense {
+	if id == utils.LatestExpense {
 		expenses, err := api.GetLastNExpense(m.UserId, 1)
 		if err != nil {
 			return err
@@ -43,6 +39,7 @@ func DeleteExpenseMessage(ctx context.Context, psm model.PubSubMessage) error {
 			app.Bot.ReplyMessage(m.ReplyToken, linebot.NewTextMessage("หารายการล่าสุดไม่เจอจ้า")).Do()
 			return errors.New(fmt.Sprintf("cannot find last expense for user %s", m.UserId))
 		}
+
 		id = int64(expenses[0].ID)
 	}
 
@@ -50,22 +47,13 @@ func DeleteExpenseMessage(ctx context.Context, psm model.PubSubMessage) error {
 
 	err = api.DeleteExpense(m.UserId, int(id))
 	if err != nil {
-		app.Bot.ReplyMessage(m.ReplyToken, linebot.NewTextMessage("น้องกำลังงง โปรลองใหม่อีกครั้งจ้า")).Do()
+		app.Bot.ReplyMessage(m.ReplyToken, linebot.NewTextMessage("น้องกำลังงง โปรดลองใหม่อีกครั้งจ้า")).Do()
 		return err
 	}
 
 	_, err = app.Bot.ReplyMessage(m.ReplyToken, linebot.NewTextMessage("ลบสำเร็จจ้า")).Do()
 
 	return err
-}
-
-func getEntityIdentifier(s string) (int64, error) {
-	if strings.HasSuffix(s, "ล่าสุด") {
-		return -1, nil
-	}
-
-	ss := strings.Split(s, " ")
-	return strconv.ParseInt(ss[len(ss) - 1], 10, 64)
 }
 
 func isDeleteExpenseMessagePattern(s string) bool {
