@@ -1,3 +1,4 @@
 prod.cred.json
 .token
 vendor
+.config.json
