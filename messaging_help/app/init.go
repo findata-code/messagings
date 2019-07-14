@@ -1,16 +1,15 @@
 package app
 
 import (
-	"errors"
-	"github.com/findata-code/fastvault-client-go"
+	"encoding/base64"
+	"encoding/json"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
 	"os"
 )
 
 const (
-	FastvaultLocation = "http://128.199.147.139:9800"
-	EnvFastvaultToken = "FV_TOKEN"
+	CONFIG = "CONFIG"
 )
 
 var (
@@ -28,14 +27,13 @@ func init() {
 }
 
 func getConfiguration() error {
-	token := os.Getenv(EnvFastvaultToken)
-	if token == ""{
-		return errors.New("Could not read fastvault token from env variable")
+	encodedConfigurationValue := os.Getenv(CONFIG)
+	b, err := base64.StdEncoding.DecodeString(encodedConfigurationValue)
+	if err != nil {
+		return err
 	}
 
-	fv := fastvault_client_go.New(FastvaultLocation)
-	err := fv.GetJson(token, &Config)
-
+	err = json.Unmarshal(b, &Config)
 	return err
 }
 
