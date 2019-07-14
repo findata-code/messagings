@@ -1,6 +1,9 @@
 package messaging_reset
 
-import "messaging_reset/app"
+import (
+	"messaging_reset/app/http_handler"
+	"messaging_reset/app/message_handler"
+)
 
-var ResetMessage = app.ResetMessage
-var GetLatestReset = app.GetLatestReset
+var ResetMessage = message_handler.ResetMessage
+var GetLatestReset = http_handler.GetLatestReset

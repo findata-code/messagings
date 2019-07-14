@@ -1,5 +1,5 @@
 package messaging_summary
 
-import "messaging_summary/app"
+import "messaging_summary/app/message_handler"
 
-var GetSummaryMessage = app.GetSummaryMessage
+var GetSummaryMessage = message_handler.GetSummaryMessage
