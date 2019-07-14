@@ -10,7 +10,7 @@ import (
 )
 
 func newLineBot() *linebot.Client {
-	client, err := linebot.New(config.LineBot.Secret, config.LineBot.Token)
+	client, err := linebot.New(Config.LineBot.Secret, Config.LineBot.Token)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -20,14 +20,14 @@ func newLineBot() *linebot.Client {
 
 func newPubSub() *pubsub.Client {
 	ctx := context.Background()
-	cred, err := base64.StdEncoding.DecodeString(config.PubSub.Credential)
+	cred, err := base64.StdEncoding.DecodeString(Config.PubSub.Credential)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	client, err := pubsub.NewClient(
 		ctx,
-		config.PubSub.ProjectId,
+		Config.PubSub.ProjectId,
 		option.WithCredentialsJSON(
 			cred))
 
