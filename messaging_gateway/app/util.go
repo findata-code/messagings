@@ -30,7 +30,7 @@ func publishToPubSub(msg Message) error {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	for i := 0; i < PUBSUB_RETRY; i++ {
-		if _, processing := <-pubSubClient.Topic(config.PubSub.Topic).Publish(ctx, pubSubMessage).Ready(); processing {
+		if _, processing := <-pubSubClient.Topic(Config.PubSub.Topic).Publish(ctx, pubSubMessage).Ready(); processing {
 			time.Sleep(1 * time.Second)
 		} else {
 			return nil

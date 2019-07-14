@@ -2,16 +2,16 @@ package app
 
 import (
 	_ "database/sql"
+	"encoding/base64"
+	"encoding/json"
 	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
-	"github.com/findata-code/fastvault-client-go"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
 	"os"
 )
 
 const (
-	FASTVAULT_LOCATION  = "http://128.199.147.139:9800"
-	ENV_FASTVAULT_TOKEN = "FV_TOKEN"
+	CONFIG = "CONFIG"
 )
 
 var (
@@ -29,15 +29,13 @@ func init() {
 }
 
 func getConfiguration() error {
-	token := os.Getenv(ENV_FASTVAULT_TOKEN)
-	if token == "" {
-		log.Fatal("Could not read fastvault token from env variable")
-	}
-	fv := fastvault_client_go.New(FASTVAULT_LOCATION)
-	err := fv.GetJson(token, &Config)
+	encodedConfigurationValue := os.Getenv(CONFIG)
+	b, err := base64.StdEncoding.DecodeString(encodedConfigurationValue)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	err = json.Unmarshal(b, &Config)
 	return err
 }
 
