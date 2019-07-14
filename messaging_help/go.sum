@@ -1,0 +1,4 @@
+github.com/findata-code/fastvault-client-go v0.0.0-20190525135754-8a451eacee88 h1:N7hLSY/2dadXF2srjeaTbXOAMEuzLdkTpTbVXOgs8wk=
+github.com/findata-code/fastvault-client-go v0.0.0-20190525135754-8a451eacee88/go.mod h1:P1B7oKv6EISobCZ+7tlhdL6ozKvfQ0rm4ELo4hznRG8=
+github.com/line/line-bot-sdk-go v6.3.0+incompatible h1:KjgZ4BMI1XekUpuG0PQM3oPaMF++VksXqoliG2lDw44=
+github.com/line/line-bot-sdk-go v6.3.0+incompatible/go.mod h1:0RjLjJEAU/3GIcHkC3av6O4jInAbt25nnZVmOFUgDBg=
