@@ -1,8 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"flag"
+	"github.com/line/line-bot-sdk-go/linebot"
+	"io/ioutil"
 	"os"
 )
 
@@ -18,23 +21,38 @@ func Exec() {
 		_           = fs.Bool("selected", false, "")
 		name        = fs.String("name", "", "")
 		chatBarText = fs.String("chatBarText", "", "")
-		area        = fs.String("area", "", "")
+		areaFile    = fs.String("areaFile", "", "")
 		image       = fs.String("image", "", "")
 	)
 
 	fs.Parse(os.Args[1:])
 
-	if err := checkRequiredProgramArgument(width, height, name, chatBarText, area, image); err != nil {
+	if err := checkRequiredProgramArgument(width, height, name, chatBarText, areaFile, image); err != nil {
 		panic(err)
 	}
+
+	//AREA := GetArea(areaFile)
 }
 
-func checkRequiredProgramArgument(width *int, height *int, name *string, chatBarText *string, area *string, image *string) error {
+func GetArea(areaFile *string) ([]linebot.AreaDetail, error) {
+	b, err := ioutil.ReadFile(*areaFile)
+	if err != nil {
+		return nil, err
+	}
+
+	var ad []linebot.AreaDetail
+
+	err = json.Unmarshal(b, &ad)
+
+	return ad, err
+}
+
+func checkRequiredProgramArgument(width *int, height *int, name *string, chatBarText *string, areaFile *string, image *string) error {
 	if *width == -1 ||
 		*height == -1 ||
 		*name == "" ||
 		*chatBarText == "" ||
-		*area == "" ||
+		*areaFile == "" ||
 		*image == "" {
 		return errors.New("required field are missing")
 	}

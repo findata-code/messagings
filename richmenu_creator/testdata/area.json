@@ -1,0 +1,62 @@
+[
+  {
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 833,
+      "height": 843
+    },
+    "action": {
+      "type": "message",
+      "text": "settings"
+    }
+  },
+  {
+    "bounds": {
+      "x": 834,
+      "y": 0,
+      "width": 833,
+      "height": 843
+    },
+    "action": {
+      "type": "message",
+      "text": "summary"
+    }
+  },
+  {
+    "bounds": {
+      "x": 1667,
+      "y": 0,
+      "width": 833,
+      "height": 843
+    },
+    "action": {
+      "type": "message",
+      "text": "income"
+    }
+  },
+  {
+    "bounds": {
+      "x": 0,
+      "y": 844,
+      "width": 833,
+      "height": 843
+    },
+    "action": {
+      "type": "message",
+      "text": "help"
+    }
+  },
+  {
+    "bounds": {
+      "x": 1667,
+      "y": 844,
+      "width": 833,
+      "height": 843
+    },
+    "action": {
+      "type": "message",
+      "text": "expense"
+    }
+  }
+]
