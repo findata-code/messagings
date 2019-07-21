@@ -30,8 +30,6 @@ func Exec() {
 	if err := checkRequiredProgramArgument(width, height, name, chatBarText, areaFile, image); err != nil {
 		panic(err)
 	}
-
-	//AREA := GetArea(areaFile)
 }
 
 func GetArea(areaFile *string) ([]linebot.AreaDetail, error) {

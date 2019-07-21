@@ -2,6 +2,7 @@ package main_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"os"
 	"reflect"
@@ -9,8 +10,23 @@ import (
 	"testing"
 )
 
+func TestGetAreaShouldReturnErrorIfFileDoesNotExists(t *testing.T){
+	filename := "testdata/notFound.json"
+	errMessage := fmt.Sprintf("open %s: no such file or directory", filename)
+
+	_, err := main.GetArea(&filename)
+
+	if err == nil {
+		t.Fatal("Expect to have error occurred")
+	}
+
+	if err.Error() != errMessage{
+		t.Error("Expect", errMessage, "actual", err.Error())
+	}
+}
+
 func TestGetAreaShouldReturnCorrectValueOfArrayOfAreaDetail(t *testing.T) {
-	filename := "testdata/AREA.json"
+	filename := "testdata/area.json"
 	var expectedAreaDetail []linebot.AreaDetail
 	json.Unmarshal([]byte(AREA), &expectedAreaDetail)
 
