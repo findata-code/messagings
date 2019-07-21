@@ -13,8 +13,23 @@ func TestExecShouldPanicStopIfRequiredProgramArgumentIsAreMissing(t *testing.T){
 			if r.(error).Error() != "required field are missing" {
 				t.Error("expect", "required field are missing", "actual", r)
 			}
-		}else{
-			t.Error("expect", "error happened", "actual", r)
+		}
+	}()
+
+	os.Args = []string{
+		"",
+		"-width=2500",
+		"-height=1686",
+		"-selected=true",
+	}
+
+	main.Exec()
+}
+
+func TestExecShouldNotPanicWithRequiredFieldIsAreMissingMessageIfAllArgumentIsAreProvidedCorrectly(t *testing.T){
+	defer func () {
+		if r := recover(); r != nil {
+			t.Error("expect", "no panic", "actual", r)
 		}
 	}()
 
