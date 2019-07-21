@@ -2,11 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"io/ioutil"
-	"log"
 	"os"
 )
 
@@ -16,37 +16,31 @@ const (
 )
 
 func main() {
+	Exec()
+}
+
+func Exec() {
 	fmt.Println(SECRET, os.Getenv(SECRET))
 	fmt.Println(TOKEN, os.Getenv(TOKEN))
 
 	var (
-		width       = flag.Int("width", 2500, "")
-		height      = flag.Int("height", 1686, "")
+		width       = flag.Int("width", -1, "")
+		height      = flag.Int("height", -1, "")
 		selected    = flag.Bool("selected", false, "")
 		name        = flag.String("name", "", "")
 		chatBarText = flag.String("chatBarText", "", "")
-		filename    = flag.String("area", "", "")
+		area        = flag.String("area", "", "")
 		image       = flag.String("image", "", "")
 	)
 
 	flag.Parse()
 
-	fmt.Println(*width, *height, *selected, *name, *chatBarText, *filename, *image)
-
-	if 	width == nil ||
-		height == nil ||
-		selected == nil ||
-		name == nil ||
-		chatBarText == nil ||
-		filename == nil ||
-		image == nil {
-
-		panic("required field are missing")
+	if err := checkRequiredProgramArgument(width, height, name, chatBarText, area, image); err != nil {
+		panic(err)
 	}
 
-	areas, err := GetAreaDetail(*filename)
+	areas, err := getAreaDetail(*area)
 	if err != nil {
-		log.Println(*filename, "not found")
 		panic(err)
 	}
 
@@ -55,13 +49,7 @@ func main() {
 		panic(err)
 	}
 
-	richMenu := linebot.RichMenu{
-		Size:        linebot.RichMenuSize{Width: *width, Height: *height},
-		Selected:    *selected,
-		Name:        *name,
-		ChatBarText: *chatBarText,
-		Areas:       areas,
-	}
+	richMenu := createRichMenu(width, height, selected, name, chatBarText, areas)
 
 	res, err := bot.CreateRichMenu(richMenu).Do()
 	if err != nil {
@@ -81,7 +69,33 @@ func main() {
 	fmt.Println(res.RichMenuID)
 }
 
-func GetAreaDetail(filename string) (result []linebot.AreaDetail, err error) {
+func checkRequiredProgramArgument(width *int, height *int, name *string, chatBarText *string, area *string, image *string) error{
+	if *width == -1 ||
+		*height == -1 ||
+		*name == "" ||
+		*chatBarText == "" ||
+		*area == "" ||
+		*image == "" {
+		fmt.Println(*width, *height, *name, *chatBarText, *area, *image)
+		return errors.New("required field are missing")
+	}
+
+	return nil
+}
+
+func createRichMenu(width *int, height *int, selected *bool, name *string, chatBarText *string, areas []linebot.AreaDetail) linebot.RichMenu {
+	richMenu := linebot.RichMenu{
+		Size:        linebot.RichMenuSize{Width: *width, Height: *height},
+		Selected:    *selected,
+		Name:        *name,
+		ChatBarText: *chatBarText,
+		Areas:       areas,
+	}
+	return richMenu
+}
+
+
+func getAreaDetail(filename string) (result []linebot.AreaDetail, err error) {
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err

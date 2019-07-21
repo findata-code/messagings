@@ -2,7 +2,7 @@
 
 source tokenloader.sh
 
-./rich_creator -width 2500 \
+./rich_creator -width=2500 \
     -height=1686 \
     -selected=true \
     -name=Home \
