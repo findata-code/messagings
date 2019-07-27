@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func GetLatestReset (uid string) (model.Reset, error){
+func GetLatestReset(uid string) (model.Reset, error) {
 	url := fmt.Sprintf("%s?user_id=%s", app.Config.API.GetLatestReset, uid)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

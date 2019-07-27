@@ -22,7 +22,6 @@ const message = `คำสั่งทั้งหมด
 - ลบรายจ่ายที่ผิดพลาดล่าสุด
  ลบรายจ่าย ล่าสุด`
 
-
 func HelpMessage(ctx context.Context, psm model.PubSubMessage) error {
 	m, err := getMessage(psm)
 	if err != nil {
@@ -54,7 +53,7 @@ func isHelpMessage(s string) bool {
 }
 
 func getAllHelpRequestMessage() []string {
-	return []string {
+	return []string{
 		"help",
 		"คำสั่ง",
 		"ช่วยเหลือ",

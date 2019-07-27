@@ -16,8 +16,6 @@ import (
 	"time"
 )
 
-
-
 /*
 	Entry point
 */
@@ -56,7 +54,6 @@ func IncomeMessage(ctx context.Context, psm model.PubSubMessage) error {
 
 	return nil
 }
-
 
 func extractValue(s string) (float64, error) {
 	var v float64

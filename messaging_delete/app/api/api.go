@@ -12,7 +12,7 @@ func AddAuth(r *http.Request) *http.Request {
 	return r
 }
 
-func CallREST(r *http.Request) (*http.Response, error){
+func CallREST(r *http.Request) (*http.Response, error) {
 	client := http.Client{}
 	return client.Do(r)
 }

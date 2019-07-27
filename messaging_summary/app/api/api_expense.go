@@ -35,4 +35,3 @@ func GetExpenses(uid, since string) ([]model.Expense, error) {
 
 	return incomes, nil
 }
-

@@ -3,14 +3,15 @@ package main_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/line/line-bot-sdk-go/linebot"
 	"os"
 	"reflect"
 	. "richmenu_creator"
 	"testing"
+
+	"github.com/line/line-bot-sdk-go/linebot"
 )
 
-func TestGetAreaShouldReturnErrorIfFileDoesNotExists(t *testing.T){
+func TestGetAreaShouldReturnErrorIfFileDoesNotExists(t *testing.T) {
 	filename := "testdata/notFound.json"
 	errMessage := fmt.Sprintf("open %s: no such file or directory", filename)
 
@@ -20,7 +21,7 @@ func TestGetAreaShouldReturnErrorIfFileDoesNotExists(t *testing.T){
 		t.Fatal("Expect to have error occurred")
 	}
 
-	if err.Error() != errMessage{
+	if err.Error() != errMessage {
 		t.Error("Expect", errMessage, "actual", err.Error())
 	}
 }

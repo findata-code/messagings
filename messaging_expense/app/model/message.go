@@ -6,4 +6,3 @@ type Message struct {
 	UserId     string
 	Timestamp  string
 }
-

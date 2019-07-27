@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func GetLatestReset (w http.ResponseWriter, r *http.Request) {
+func GetLatestReset(w http.ResponseWriter, r *http.Request) {
 	if err := CheckAuth(r); err != nil {
 		ResponseUnauthorized(w, err)
 		return
@@ -33,7 +33,7 @@ func GetLatestReset (w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%s", string(b))
 }
 
-func ResponseError (w http.ResponseWriter, err error) {
+func ResponseError(w http.ResponseWriter, err error) {
 	w.WriteHeader(http.StatusBadRequest)
 	fmt.Fprint(w, err.Error())
 }
