@@ -20,15 +20,14 @@ func TestGetAreaShouldReturnErrorIfFileDoesNotExists(t *testing.T) {
 	if err == nil {
 		t.Fatal("Expect to have error occurred")
 	}
-
 	if err.Error() != errMessage {
 		t.Error("Expect", errMessage, "actual", err.Error())
 	}
 }
 
 func TestGetAreaShouldReturnCorrectValueOfArrayOfAreaDetail(t *testing.T) {
-	filename := "testdata/area.json"
 	var expectedAreaDetail []linebot.AreaDetail
+	filename := "testdata/area.json"
 	json.Unmarshal([]byte(AREA), &expectedAreaDetail)
 
 	area, _ := GetArea(&filename)
@@ -39,7 +38,6 @@ func TestGetAreaShouldReturnCorrectValueOfArrayOfAreaDetail(t *testing.T) {
 }
 
 func TestExecShouldPanicStopIfRequiredProgramArgumentIsAreMissing(t *testing.T) {
-
 	defer func() {
 		if r := recover(); r != nil {
 			if r.(error).Error() != "required field are missing" {
@@ -73,7 +71,7 @@ func TestExecShouldNotPanicWithRequiredFieldIsAreMissingMessageIfAllArgumentIsAr
 		"-name=Home",
 		"-chatBarText=Home",
 		"-areaFile=$(pwd)/areas/Home.json",
-		"-image=$(pwd)/images/Home.png",
+		"-imageFile=$(pwd)/images/Home.png",
 	}
 
 	Exec()
@@ -82,64 +80,64 @@ func TestExecShouldNotPanicWithRequiredFieldIsAreMissingMessageIfAllArgumentIsAr
 const AREA = `
 [
   {
-    "bounds": {
-      "x": 0,
-      "y": 0,
-      "width": 833,
-      "height": 843
-    },
-    "action": {
-      "type": "message",
-      "text": "settings"
-    }
+	"bounds": {
+	  "x": 0,
+	  "y": 0,
+	  "width": 833,
+	  "height": 843
+	},
+	"action": {
+	  "type": "message",
+	  "text": "settings"
+	}
   },
   {
-    "bounds": {
-      "x": 834,
-      "y": 0,
-      "width": 833,
-      "height": 843
-    },
-    "action": {
-      "type": "message",
-      "text": "summary"
-    }
+	"bounds": {
+	  "x": 834,
+	  "y": 0,
+	  "width": 833,
+	  "height": 843
+	},
+	"action": {
+	  "type": "message",
+	  "text": "summary"
+	}
   },
   {
-    "bounds": {
-      "x": 1667,
-      "y": 0,
-      "width": 833,
-      "height": 843
-    },
-    "action": {
-      "type": "message",
-      "text": "income"
-    }
+	"bounds": {
+	  "x": 1667,
+	  "y": 0,
+	  "width": 833,
+	  "height": 843
+	},
+	"action": {
+	  "type": "message",
+	  "text": "income"
+	}
   },
   {
-    "bounds": {
-      "x": 0,
-      "y": 844,
-      "width": 833,
-      "height": 843
-    },
-    "action": {
-      "type": "message",
-      "text": "help"
-    }
+	"bounds": {
+	  "x": 0,
+	  "y": 844,
+	  "width": 833,
+	  "height": 843
+	},
+	"action": {
+	  "type": "message",
+	  "text": "help"
+	}
   },
   {
-    "bounds": {
-      "x": 1667,
-      "y": 844,
-      "width": 833,
-      "height": 843
-    },
-    "action": {
-      "type": "message",
-      "text": "expense"
-    }
+	"bounds": {
+	  "x": 1667,
+	  "y": 844,
+	  "width": 833,
+	  "height": 843
+	},
+	"action": {
+	  "type": "message",
+	  "text": "expense"
+	}
   }
 ]
 `
