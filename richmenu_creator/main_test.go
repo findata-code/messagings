@@ -6,7 +6,7 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 	"os"
 	"reflect"
-	"richmenu_creator"
+	. "richmenu_creator"
 	"testing"
 )
 
@@ -14,7 +14,7 @@ func TestGetAreaShouldReturnErrorIfFileDoesNotExists(t *testing.T){
 	filename := "testdata/notFound.json"
 	errMessage := fmt.Sprintf("open %s: no such file or directory", filename)
 
-	_, err := main.GetArea(&filename)
+	_, err := GetArea(&filename)
 
 	if err == nil {
 		t.Fatal("Expect to have error occurred")
@@ -30,7 +30,7 @@ func TestGetAreaShouldReturnCorrectValueOfArrayOfAreaDetail(t *testing.T) {
 	var expectedAreaDetail []linebot.AreaDetail
 	json.Unmarshal([]byte(AREA), &expectedAreaDetail)
 
-	area, _ := main.GetArea(&filename)
+	area, _ := GetArea(&filename)
 
 	if !reflect.DeepEqual(expectedAreaDetail, area) {
 		t.Error("expect equal to area deeply but false")
@@ -54,7 +54,7 @@ func TestExecShouldPanicStopIfRequiredProgramArgumentIsAreMissing(t *testing.T) 
 		"-selected=true",
 	}
 
-	main.Exec()
+	Exec()
 }
 
 func TestExecShouldNotPanicWithRequiredFieldIsAreMissingMessageIfAllArgumentIsAreProvidedCorrectly(t *testing.T) {
@@ -75,7 +75,7 @@ func TestExecShouldNotPanicWithRequiredFieldIsAreMissingMessageIfAllArgumentIsAr
 		"-image=$(pwd)/images/Home.png",
 	}
 
-	main.Exec()
+	Exec()
 }
 
 const AREA = `
