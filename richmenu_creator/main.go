@@ -25,7 +25,7 @@ func main() {
 	Exec(wrapper)
 }
 
-func Exec(linebot BotWrapper) {
+func Exec(bot BotWrapper) {
 	config := model.Config{}
 	if err := config.Read(os.Args); err != nil {
 		panic(err)
@@ -44,18 +44,18 @@ func Exec(linebot BotWrapper) {
 		config.ChatBarText,
 		area)
 
-	res, err := linebot.CreateRichMenu(richMenu)
+	res, err := bot.CreateRichMenu(richMenu)
 	if err != nil {
 		panic(err)
 	}
 
-	_, err = linebot.UploadRichMenuImage(res.RichMenuID, config.ImageFile)
+	_, err = bot.UploadRichMenuImage(res.RichMenuID, config.ImageFile)
 	if err != nil {
 		panic(err)
 	}
 
 	if config.Selected {
-		_, err = linebot.SetDefaultRichMenu(res.RichMenuID)
+		_, err = bot.SetDefaultRichMenu(res.RichMenuID)
 		if err != nil {
 			panic(err)
 		}
@@ -71,7 +71,9 @@ func CreateRichMenu(
 	areas []linebot.AreaDetail) linebot.RichMenu {
 
 	richMenu := linebot.RichMenu{
-		Size:        linebot.RichMenuSize{Width: width, Height: height},
+		Size: linebot.RichMenuSize{
+			Width:  width,
+			Height: height},
 		Selected:    selected,
 		Name:        name,
 		ChatBarText: chatBarText,
