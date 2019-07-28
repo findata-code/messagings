@@ -15,21 +15,23 @@ const (
 )
 
 func main() {
-	Exec()
+	bot, err := linebot.New(os.Getenv(SECRET), os.Getenv(TOKEN))
+	if err != nil {
+		panic(err)
+	}
+
+	wrapper := NewBotWrapper(bot)
+
+	Exec(wrapper)
 }
 
-func Exec() {
+func Exec(linebot BotWrapper) {
 	config := model.Config{}
 	if err := config.Read(os.Args); err != nil {
 		panic(err)
 	}
 
 	area, err := GetArea(config.AreaFile)
-	if err != nil {
-		panic(err)
-	}
-
-	bot, err := linebot.New(os.Getenv(SECRET), os.Getenv(TOKEN))
 	if err != nil {
 		panic(err)
 	}
@@ -42,18 +44,18 @@ func Exec() {
 		config.ChatBarText,
 		area)
 
-	res, err := bot.CreateRichMenu(richMenu).Do()
+	res, err := linebot.CreateRichMenu(richMenu)
 	if err != nil {
 		panic(err)
 	}
 
-	_, err = bot.UploadRichMenuImage(res.RichMenuID, config.ImageFile).Do()
+	_, err = linebot.UploadRichMenuImage(res.RichMenuID, config.ImageFile)
 	if err != nil {
 		panic(err)
 	}
 
 	if config.Selected {
-		_, err = bot.SetDefaultRichMenu(res.RichMenuID).Do()
+		_, err = linebot.SetDefaultRichMenu(res.RichMenuID)
 		if err != nil {
 			panic(err)
 		}
