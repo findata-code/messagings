@@ -76,7 +76,7 @@ const AREA = `
 ]
 `
 
-func TestCreateRichMenu(t *testing.T) {
+func TestCreateRichMenuShouldReturnCorrectRichMenu(t *testing.T) {
 	var areas []linebot.AreaDetail
 	w := 1
 	h := 2
@@ -161,3 +161,7 @@ func TestExecShouldPanicStopIfRequiredProgramArgumentIsAreMissing(t *testing.T) 
 	Exec(nil)
 }
 
+func TestExecShouldCallLineBotProperlyAndCreateRichMenu(t *testing.T){
+
+	Exec()
+}
