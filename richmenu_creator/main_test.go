@@ -3,9 +3,9 @@ package main_test
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"reflect"
 	. "richmenu_creator"
+	"richmenu_creator/model"
 	"testing"
 
 	"github.com/line/line-bot-sdk-go/linebot"
@@ -142,26 +142,57 @@ func TestGetAreaShouldReturnCorrectValueOfArrayOfAreaDetail(t *testing.T) {
 	}
 }
 
-func TestExecShouldPanicStopIfRequiredProgramArgumentIsAreMissing(t *testing.T) {
-	defer func() {
-		if r := recover(); r != nil {
-			if r.(error).Error() != "required field are missing" {
-				t.Error("expect", "required field are missing", "actual", r)
-			}
-		}
-	}()
-
-	os.Args = []string{
-		"",
-		"-width=2500",
-		"-height=1686",
-		"-selected=true",
+func TestExecShouldCallLineBotProperlyAndCreateRichMenu(t *testing.T) {
+	var expectedAreas []linebot.AreaDetail
+	if err := json.Unmarshal([]byte(AREA), &expectedAreas); err != nil {
+		t.Errorf("expect can parse area, actual failed to parse area")
 	}
 
-	Exec(nil)
-}
 
-func TestExecShouldCallLineBotProperlyAndCreateRichMenu(t *testing.T){
+	config := model.Config{
+		Width:       1,
+		Height:      2,
+		ChatBarText: "ChatBarText",
+		Name:        "Name",
+		Selected:    true,
+		ImageFile:   "image.png",
+		AreaFile:    "testdata/area.json",
+	}
 
-	Exec()
+	expectedRichMenu := linebot.RichMenu{
+		Size: linebot.RichMenuSize{
+			Width:  config.Width,
+			Height: config.Height,
+		},
+		Selected:    config.Selected,
+		Name:        config.Name,
+		ChatBarText: config.ChatBarText,
+		Areas:       expectedAreas,
+	}
+
+	botMock := NewBotWrapperMock()
+
+	expectedRichMenuResponseId := "1234"
+
+	botMock.SetupCreateRichMenu = func() (response *linebot.RichMenuIDResponse, e error) {
+		return &linebot.RichMenuIDResponse{RichMenuID: expectedRichMenuResponseId}, nil
+	}
+
+	Exec(botMock, config)
+
+	if !reflect.DeepEqual(expectedRichMenu, botMock.Calls["CreateRichMenu"][0][0]) {
+		t.Errorf("expect passed %v but actual passed %v", expectedRichMenu, botMock.Calls["CreateRichMenu"][0][0])
+	}
+
+	if expectedRichMenuResponseId != botMock.Calls["UploadRichMenuImage"][0][0]{
+		t.Errorf("expect %s, actual %s", expectedRichMenuResponseId, botMock.Calls["UploadRichMenuImage"][0][0])
+	}
+
+	if config.ImageFile != botMock.Calls["UploadRichMenuImage"][0][1]{
+		t.Errorf("expect %s, actual %s", expectedRichMenuResponseId, botMock.Calls["UploadRichMenuImage"][0][0])
+	}
+
+	if expectedRichMenuResponseId != botMock.Calls["SetDefaultRichMenu"][0][0]{
+		t.Errorf("expect %s, actual %s", expectedRichMenuResponseId, botMock.Calls["SetDefaultRichMenu"][0][0])
+	}
 }

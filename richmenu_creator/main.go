@@ -20,17 +20,17 @@ func main() {
 		panic(err)
 	}
 
-	wrapper := NewBotWrapper(bot)
-
-	Exec(wrapper)
-}
-
-func Exec(bot BotWrapper) {
 	config := model.Config{}
 	if err := config.Read(os.Args); err != nil {
 		panic(err)
 	}
 
+	wrapper := NewBotWrapper(bot)
+
+	Exec(wrapper, config)
+}
+
+func Exec(bot BotWrapper, config model.Config) {
 	area, err := GetArea(config.AreaFile)
 	if err != nil {
 		panic(err)
