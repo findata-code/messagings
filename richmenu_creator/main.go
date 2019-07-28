@@ -50,13 +50,13 @@ func Exec(bot BotWrapper, config model.Config) {
 		panic(err)
 	}
 	fmt.Println("Rich menu created name:", config.Name)
-	fmt.Println("Id:", res.RichMenuID)
+	fmt.Println("\tId:", res.RichMenuID)
 
 	_, err = bot.UploadRichMenuImage(res.RichMenuID, config.ImageFile)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Image uploaded")
+	fmt.Println("\tImage uploaded")
 
 
 	if config.Selected {
@@ -64,10 +64,10 @@ func Exec(bot BotWrapper, config model.Config) {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("Set as a default menu")
+		fmt.Println("\tSet as a default menu")
 	}
 
-	fmt.Println("Done")
+	fmt.Println("\tDone")
 }
 
 func CreateRichMenu(
