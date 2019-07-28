@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"richmenu_creator/model"
@@ -48,18 +49,25 @@ func Exec(bot BotWrapper, config model.Config) {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("Rich menu created name:", config.Name)
+	fmt.Println("Id:", res.RichMenuID)
 
 	_, err = bot.UploadRichMenuImage(res.RichMenuID, config.ImageFile)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("Image uploaded")
+
 
 	if config.Selected {
 		_, err = bot.SetDefaultRichMenu(res.RichMenuID)
 		if err != nil {
 			panic(err)
 		}
+		fmt.Println("Set as a default menu")
 	}
+
+	fmt.Println("Done")
 }
 
 func CreateRichMenu(
