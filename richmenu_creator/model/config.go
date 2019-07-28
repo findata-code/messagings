@@ -28,6 +28,7 @@ func (config *Config) Read(args []string) error {
 	if err != nil {
 		return err
 	}
+
 	return checkRequiredProgramArgument(*config)
 }
 

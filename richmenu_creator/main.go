@@ -9,6 +9,11 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
+const (
+	SECRET = "SECRET"
+	TOKEN  = "TOKEN"
+)
+
 func main() {
 	Exec()
 }
@@ -18,10 +23,64 @@ func Exec() {
 	if err := config.Read(os.Args); err != nil {
 		panic(err)
 	}
+
+	area, err := GetArea(config.AreaFile)
+	if err != nil {
+		panic(err)
+	}
+
+	bot, err := linebot.New(os.Getenv(SECRET), os.Getenv(TOKEN))
+	if err != nil {
+		panic(err)
+	}
+
+	richMenu := CreateRichMenu(
+		config.Width,
+		config.Height,
+		config.Selected,
+		config.Name,
+		config.ChatBarText,
+		area)
+
+	res, err := bot.CreateRichMenu(richMenu).Do()
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = bot.UploadRichMenuImage(res.RichMenuID, config.ImageFile).Do()
+	if err != nil {
+		panic(err)
+	}
+
+	if config.Selected {
+		_, err = bot.SetDefaultRichMenu(res.RichMenuID).Do()
+		if err != nil {
+			panic(err)
+		}
+	}
 }
 
-func GetArea(areaFile *string) ([]linebot.AreaDetail, error) {
-	b, err := ioutil.ReadFile(*areaFile)
+func CreateRichMenu(
+	width int,
+	height int,
+	selected bool,
+	name string,
+	chatBarText string,
+	areas []linebot.AreaDetail) linebot.RichMenu {
+
+	richMenu := linebot.RichMenu{
+		Size:        linebot.RichMenuSize{Width: width, Height: height},
+		Selected:    selected,
+		Name:        name,
+		ChatBarText: chatBarText,
+		Areas:       areas,
+	}
+
+	return richMenu
+}
+
+func GetArea(areaFile string) ([]linebot.AreaDetail, error) {
+	b, err := ioutil.ReadFile(areaFile)
 	if err != nil {
 		return nil, err
 	}
