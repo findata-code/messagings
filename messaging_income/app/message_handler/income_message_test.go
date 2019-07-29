@@ -48,7 +48,7 @@ func TestIsIncomePattern(t *testing.T) {
 	})
 }
 
-func TestExtractValue(t *testing.T){
+func TestExtractValue(t *testing.T) {
 	t.Run("it should return 100 when enter เพื่อนจ่ายหนี้ +100", ExtractValueTestCase("เพื่อนจ่ายหนี้ +100", 100))
 	t.Run("it should return 100 when enter +100 เพื่อนจ่ายหนี้", ExtractValueTestCase("+100 เพื่อนจ่ายหนี้", 100))
 	t.Run("it should return 10000 when enter เงินเดือน +10k", ExtractValueTestCase("เงินเดือน +10k", 10000))
@@ -63,7 +63,7 @@ func TestExtractValue(t *testing.T){
 	})
 }
 
-func  ExtractValueTestCase(s string, expect float64) func (*testing.T){
+func ExtractValueTestCase(s string, expect float64) func(*testing.T) {
 	return func(t *testing.T) {
 		v, err := extractValue(s)
 		if err != nil {

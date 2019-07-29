@@ -14,7 +14,7 @@ import (
 
 const (
 	PUBSUB_RETRY = 10
-	CONFIG = "CONFIG"
+	CONFIG       = "CONFIG"
 )
 
 var (

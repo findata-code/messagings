@@ -15,5 +15,5 @@ func GetEntityIdentifier(s string) (int64, error) {
 	}
 
 	ss := strings.Split(s, " ")
-	return strconv.ParseInt(ss[len(ss) - 1], 10, 64)
+	return strconv.ParseInt(ss[len(ss)-1], 10, 64)
 }

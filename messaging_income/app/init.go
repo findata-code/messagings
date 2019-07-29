@@ -37,7 +37,6 @@ func init() {
 	Bot = newLineBot()
 }
 
-
 func getConfiguration() error {
 	encodedConfigurationValue := os.Getenv(CONFIG)
 	b, err := base64.StdEncoding.DecodeString(encodedConfigurationValue)
@@ -49,7 +48,6 @@ func getConfiguration() error {
 	return err
 }
 
-
 func newLineBot() *linebot.Client {
 	client, err := linebot.New(Config.LineBot.Secret, Config.LineBot.Token)
 	if err != nil {
@@ -58,4 +56,3 @@ func newLineBot() *linebot.Client {
 
 	return client
 }
-

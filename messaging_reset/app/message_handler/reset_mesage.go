@@ -21,10 +21,10 @@ func ResetMessage(ctx context.Context, psm model.PubSubMessage) error {
 	}
 
 	r := model.Reset{
-		UserId:m.UserId,
-		UnixNano:m.Timestamp,
-		Timestamp:time.Now(),
-		FullMessage:m.Message,
+		UserId:      m.UserId,
+		UnixNano:    m.Timestamp,
+		Timestamp:   time.Now(),
+		FullMessage: m.Message,
 	}
 
 	err = app.Db.Create(&r).Error
